@@ -5,10 +5,8 @@ const isDir = (filePath) => fs.lstatSync(filePath).isDirectory();
 
 const isFile = (filePath) => fs.lstatSync(filePath).isFile();
 
-const isPhoto = (filePath) => {
+const isPhoto = (filePath, extensions = []) => {
   if (!isFile(filePath)) return false;
-
-  const extensions = ['.jpg', '.png'];
   return extensions.includes(path.extname(filePath));
 };
 
