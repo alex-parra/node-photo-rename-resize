@@ -35,8 +35,6 @@ const exifDateName = async (filePath) => {
  * Resize a photo and save to file as optimized JPG
  */
 const renameResize = async (filePath, destDir, { MAX_SIDE }) => {
-  console.log(` ./${path.basename(filePath)}`);
-
   let newName = await exifDateName(filePath);
   const destFile = adjustIfExists(destDir, newName, '.jpg');
 

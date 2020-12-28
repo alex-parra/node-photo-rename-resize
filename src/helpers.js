@@ -3,7 +3,11 @@ const fs = require('fs');
 
 const isDir = (filePath) => fs.lstatSync(filePath).isDirectory();
 
-const isFile = (filePath) => fs.lstatSync(filePath).isFile();
+const isFile = (filePath) => {
+  const isF = fs.lstatSync(filePath).isFile();
+  const isDS = path.basename(filePath) === '.DS_Store';
+  return isF && !isDS;
+};
 
 const isPhoto = (filePath, extensions = []) => {
   if (!isFile(filePath)) return false;
@@ -15,9 +19,16 @@ const resetDir = (dirPath) => {
   fs.mkdirSync(dirPath, { recursive: true });
 };
 
+const copyUnchanged = (filePath, destDir) => {
+  const newFileName = path.join(destDir, path.basename(filePath));
+  fs.copyFileSync(filePath, newFileName);
+  return newFileName;
+};
+
 module.exports = {
   isFile,
   isPhoto,
   isDir,
   resetDir,
+  copyUnchanged,
 };
