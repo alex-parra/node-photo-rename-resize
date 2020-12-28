@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { isFile, resetDir } = require('./helpers');
+const { isPhoto, resetDir } = require('./helpers');
 const { renameResize } = require('./renameResize');
 
 module.exports = {
@@ -8,11 +8,16 @@ module.exports = {
     const destDir = path.join(sourceDir, 'SMALL');
     resetDir(destDir);
 
-    const files = fs.readdirSync(sourceDir).filter(isFile);
+    const files = fs.readdirSync(sourceDir).filter(isPhoto);
 
-    files.forEach((file) => {
-      const absFilePath = path.join(sourceDir, file);
-      renameResize(absFilePath, destDir, MAX_SIDE);
-    });
+    console.log('');
+    console.log(`Processing ${files.length} photos in '${sourceDir}'`);
+
+    return Promise.all(
+      files.map((file) => {
+        const absFilePath = path.join(sourceDir, file);
+        return renameResize(absFilePath, destDir, MAX_SIDE);
+      }),
+    );
   },
 };
